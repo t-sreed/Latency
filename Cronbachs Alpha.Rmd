@@ -1,0 +1,53 @@
+---
+title: "Eigen Value_Scree Plot"
+author: "Tanu"
+date: "2/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(psych)
+library(GPArotation)
+```
+
+
+```{r Read data in}
+
+###REad in the genetic data
+genetic<-read.csv("data/HW2dat.csv",head=TRUE,sep=",")
+
+```
+
+```{r data wrangle}
+###write descriptive stats to screen
+summary(genetic)
+
+###adds the data so variable names can be used without pre-specificaiton of dataname
+attach(genetic)
+
+###create an object with just the 5 variables we want to analyze
+usevars<-cbind(C1,C2,C3,C4_R,C5_R)
+
+
+```
+
+
+```{r correlations}
+###Here we use polychoric correlation and do parallel analysis of eigenvalues
+geneticparallel<-fa.parallel.poly(usevars)
+str(geneticparallel)
+geneticparallel$pc.values
+
+###Here we use Pearson correlation (note, poly is dropped from function name)
+geneticparallel.pearson<-fa.parallel(usevars)
+str(geneticparallel.pearson)
+geneticparallel.pearson$pc.values
+
+```
+
+```{r crombachs alpha}
+geneticalpha<-alpha(usevars)
+geneticalpha
+```
+
